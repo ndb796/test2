@@ -983,7 +983,7 @@ class Solver(object):
             x_real = x_real.to(self.device)
             c_trg_list = self.create_labels(c_org, self.c_dim, self.dataset, self.selected_attrs)
 
-            pgd_attack = attacks.LinfPGDAttack(model=self.G, device=self.device, feat=None, watermark_extractor=self.watermark_extractor, lam=0.01, extractor_input_size=224)
+            pgd_attack = attacks.LinfPGDAttack(model=self.G, device=self.device, feat=None, watermark_extractor=self.watermark_extractor, lam=100, extractor_input_size=224)
 
             # Translated images.
             x_fake_list = [x_real]
