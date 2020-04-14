@@ -125,6 +125,7 @@ if __name__ == '__main__':
 
     # Watermark Extractor.
     parser.add_argument('--watermark_extractor_name', type=str, default='ResNet_ImageNet')
+    parser.add_argument('--lam', type=int, default=100)
     parser.add_argument('--result_data_path', type=str, default='result.dat')
     
     config = parser.parse_args()
