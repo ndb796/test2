@@ -9,7 +9,7 @@ import torch.nn as nn
 import defenses.smoothing as smoothing
 
 class LinfPGDAttack(object):
-    def __init__(self, model=None, device=None, epsilon=0.05, k=100, a=0.002, feat=None, watermark_extractor=None, lam=1.0, extractor_input_size=224):
+    def __init__(self, model=None, device=None, epsilon=0.05, k=100, a=0.005, feat=None, watermark_extractor=None, lam=1.0, extractor_input_size=224):
         """
         FGSM, I-FGSM and PGD attacks
         epsilon: magnitude of attack
