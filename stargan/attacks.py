@@ -76,8 +76,8 @@ class LinfPGDAttack(object):
             self.watermark_extractor.zero_grad()
             
             # Minus in the loss means "towards" and plus means "away from"
-            loss = self.loss_fn(output, y)
-            loss += self.extractor_loss_fn(extraction_output.unsqueeze(0), target_label).to(self.device) * self.lam
+            loss = self.loss_fn(output, y) * self.lam
+            loss += self.extractor_loss_fn(extraction_output.unsqueeze(0), target_label).to(self.device)
             
             loss.backward()
             grad = X.grad
