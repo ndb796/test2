@@ -77,7 +77,7 @@ class LinfPGDAttack(object):
             
             # Minus in the loss means "towards" and plus means "away from"
             loss = self.loss_fn(output, y)
-            loss += self.extractor_loss_fn(extraction_output.unsqueeze(0), target_label).to(self.device) 
+            loss += self.extractor_loss_fn(extraction_output.unsqueeze(0), target_label).to(self.device) * self.lam
             
             loss.backward()
             grad = X.grad
