@@ -101,6 +101,7 @@ if __name__ == '__main__':
 
     # Test configuration.
     parser.add_argument('--test_iters', type=int, default=200000, help='test model from this step')
+    parser.add_argument('--test_image_number', type=int, default=1000, help='number of test images')
 
     # Miscellaneous.
     parser.add_argument('--num_workers', type=int, default=1)
