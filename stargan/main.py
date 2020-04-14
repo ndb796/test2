@@ -1,5 +1,7 @@
 import os
 import argparse
+import pickle
+
 from solver import Solver
 from data_loader import get_loader
 from torch.backends import cudnn
@@ -61,8 +63,10 @@ def main(config):
             # solver.test_attack_cond()
         elif config.dataset in ['Both']:
             solver.test_multi()
-            
-    return result
+    
+    # Save results.
+    with open(config.result_path, "wb") as fp:
+        pickle.dump(result, fp)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -120,8 +124,8 @@ if __name__ == '__main__':
 
     # Watermark Extractor.
     parser.add_argument('--watermark_extractor_name', type=str, default='ResNet_ImageNet')
+    parser.add_argument('--result_path', type=str, default='result.txt')
     
     config = parser.parse_args()
     print(config)
-    output_result = main(config)
-    print(output_result)
+    main(config)
