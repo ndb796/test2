@@ -138,6 +138,9 @@ class Solver(object):
             self.extractor_class = 1000
         elif watermark_extractor_name == 'ResNet_CIFAR':
             self.watermark_extractor = ResNet18()
+            import torch.backends.cudnn as cudnn
+            self.watermark_extractor = torch.nn.DataParallel(self.watermark_extractor)
+            cudnn.benchmark = True
             checkpoint = torch.load('./basic_training')
             self.watermark_extractor.load_state_dict(checkpoint['net'])
             self.watermark_extractor.eval()
@@ -146,6 +149,9 @@ class Solver(object):
             self.extractor_class = 10
         elif watermark_extractor_name == 'ResNet_Non_Robust_CIFAR':
             self.watermark_extractor = ResNet18()
+            import torch.backends.cudnn as cudnn
+            self.watermark_extractor = torch.nn.DataParallel(self.watermark_extractor)
+            cudnn.benchmark = True
             checkpoint = torch.load('./basic_training_with_non_robust_dataset')
             self.watermark_extractor.load_state_dict(checkpoint['net'])
             self.watermark_extractor.eval()
