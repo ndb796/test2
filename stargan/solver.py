@@ -1035,7 +1035,7 @@ class Solver(object):
             result_path = os.path.join(self.result_dir, '{}-images.jpg'.format(i+1))
             save_image(self.denorm(x_concat.data.cpu()), result_path, nrow=1, padding=0)
 
-            if i == self.test_image_number:     # stop after this many images
+            if i == self.test_image_number - 1:     # stop after this many images
                 break
         
         # Print metrics
