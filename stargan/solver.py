@@ -133,16 +133,22 @@ class Solver(object):
             self.watermark_extractor = pretrainedmodels.__dict__['resnet50'](num_classes=1000, pretrained='imagenet')
             self.watermark_extractor.eval()
             self.watermark_extractor = self.watermark_extractor.to(self.device)
+            self.extractor_input_size = 224
+            self.extractor_class = 1000
         elif watermark_extractor_name == 'ResNet_CIFAR':
             self.watermark_extractor = ResNet18()
             checkpoint = torch.load('./basic_training')
             self.watermark_extractor.eval()
             self.watermark_extractor = self.watermark_extractor.to(self.device)
+            self.extractor_input_size = 32
+            self.extractor_class = 10
         elif watermark_extractor_name == 'ResNet_Non_Robust_CIFAR':
             self.watermark_extractor = ResNet18()
             checkpoint = torch.load('./basic_training_with_non_robust_dataset')
             self.watermark_extractor.eval()
             self.watermark_extractor = self.watermark_extractor.to(self.device)
+            self.extractor_input_size = 32
+            self.extractor_class = 10
         
     def build_and_restore_alt_model(self):
         """Create a generator and a discriminator."""
@@ -995,7 +1001,7 @@ class Solver(object):
             x_real = x_real.to(self.device)
             c_trg_list = self.create_labels(c_org, self.c_dim, self.dataset, self.selected_attrs)
 
-            pgd_attack = attacks.LinfPGDAttack(model=self.G, device=self.device, feat=None, watermark_extractor=self.watermark_extractor, lam=1000, extractor_input_size=224)
+            pgd_attack = attacks.LinfPGDAttack(model=self.G, device=self.device, feat=None, watermark_extractor=self.watermark_extractor, lam=1000, extractor_input_size=self.extractor_input_size)
 
             # Translated images.
             x_fake_list = [x_real]
@@ -1008,7 +1014,7 @@ class Solver(object):
                     gen_noattack, gen_noattack_feats = self.G(x_real_mod, c_trg)
 
                 # Attacks
-                x_adv, perturb, extraction_output = pgd_attack.perturb(x_real, gen_noattack, c_trg, randint(0, 999))
+                x_adv, perturb, extraction_output = pgd_attack.perturb(x_real, gen_noattack, c_trg, randint(0, self.extractor_class - 1))
                 # x_adv, perturb, blurred_image = pgd_attack.perturb_blur(x_real, gen_noattack, c_trg)    # White-box attack on blur
                 # x_adv, perturb = pgd_attack.perturb_blur_iter_full(x_real, gen_noattack, c_trg)         # Spread-spectrum attack on blur
                 # x_adv, perturb = pgd_attack.perturb_blur_eot(x_real, gen_noattack, c_trg)               # EoT blur adaptation
