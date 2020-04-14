@@ -85,6 +85,7 @@ class Solver(object):
 
         # Watermark extractor.
         self.watermark_extractor_name = config.watermark_extractor_name
+        self.lam = config.lam
         
         # Build the model and tensorboard.
         self.build_model()
@@ -1001,7 +1002,7 @@ class Solver(object):
             x_real = x_real.to(self.device)
             c_trg_list = self.create_labels(c_org, self.c_dim, self.dataset, self.selected_attrs)
 
-            pgd_attack = attacks.LinfPGDAttack(model=self.G, device=self.device, feat=None, watermark_extractor=self.watermark_extractor, lam=1000, extractor_input_size=self.extractor_input_size)
+            pgd_attack = attacks.LinfPGDAttack(model=self.G, device=self.device, feat=None, watermark_extractor=self.watermark_extractor, lam=self.lam, extractor_input_size=self.extractor_input_size)
 
             # Translated images.
             x_fake_list = [x_real]
