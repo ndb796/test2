@@ -63,6 +63,7 @@ class Solver(object):
 
         # Test configurations.
         self.test_iters = config.test_iters
+        self.test_image_number = config.test_image_number
 
         # Miscellaneous.
         self.use_tensorboard = config.use_tensorboard
@@ -1034,10 +1035,8 @@ class Solver(object):
             result_path = os.path.join(self.result_dir, '{}-images.jpg'.format(i+1))
             save_image(self.denorm(x_concat.data.cpu()), result_path, nrow=1, padding=0)
 
-            '''
-            if i == 49:     # stop after this many images
+            if i == self.test_image_number:     # stop after this many images
                 break
-            '''
         
         # Print metrics
         print('{} images. L1 error: {}. L2 error: {}. prop_dist: {}. L0 error: {}. L_-inf error: {}.'.format(n_samples, 
