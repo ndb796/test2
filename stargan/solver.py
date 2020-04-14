@@ -139,7 +139,7 @@ class Solver(object):
         elif watermark_extractor_name == 'ResNet_CIFAR':
             self.watermark_extractor = ResNet18()
             checkpoint = torch.load('./basic_training')
-            self.watermark_extractor.load_state_dict(checkpoint)
+            self.watermark_extractor.load_state_dict(checkpoint['net'])
             self.watermark_extractor.eval()
             self.watermark_extractor = self.watermark_extractor.to(self.device)
             self.extractor_input_size = 32
@@ -147,7 +147,7 @@ class Solver(object):
         elif watermark_extractor_name == 'ResNet_Non_Robust_CIFAR':
             self.watermark_extractor = ResNet18()
             checkpoint = torch.load('./basic_training_with_non_robust_dataset')
-            self.watermark_extractor.load_state_dict(checkpoint)
+            self.watermark_extractor.load_state_dict(checkpoint['net'])
             self.watermark_extractor.eval()
             self.watermark_extractor = self.watermark_extractor.to(self.device)
             self.extractor_input_size = 32
