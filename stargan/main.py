@@ -65,7 +65,7 @@ def main(config):
             solver.test_multi()
     
     # Save results.
-    with open(config.result_path, "wb") as fp:
+    with open(config.result_data_path, "wb") as fp:
         pickle.dump(result, fp)
 
 if __name__ == '__main__':
@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
     # Watermark Extractor.
     parser.add_argument('--watermark_extractor_name', type=str, default='ResNet_ImageNet')
-    parser.add_argument('--result_path', type=str, default='result.dat')
+    parser.add_argument('--result_data_path', type=str, default='result.dat')
     
     config = parser.parse_args()
     print(config)
