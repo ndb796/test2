@@ -1,9 +1,11 @@
 from model import Generator, AvgBlurGenerator
 from model import Discriminator
+from model import ResNet18
 from torch.autograd import Variable
 from torchvision.utils import save_image
 import torch
 import torch.nn.functional as F
+import torch.nn as nn
 import numpy as np
 import os
 import time
@@ -129,6 +131,16 @@ class Solver(object):
     def load_watermark_extractor(self, watermark_extractor_name):
         if watermark_extractor_name == 'ResNet_ImageNet':
             self.watermark_extractor = pretrainedmodels.__dict__['resnet50'](num_classes=1000, pretrained='imagenet')
+            self.watermark_extractor.eval()
+            self.watermark_extractor = self.watermark_extractor.to(self.device)
+        elif watermark_extractor_name == 'ResNet_CIFAR':
+            self.watermark_extractor = ResNet18()
+            checkpoint = torch.load('./basic_training')
+            self.watermark_extractor.eval()
+            self.watermark_extractor = self.watermark_extractor.to(self.device)
+        elif watermark_extractor_name == 'ResNet_Non_Robust_CIFAR':
+            self.watermark_extractor = ResNet18()
+            checkpoint = torch.load('./basic_training_with_non_robust_dataset')
             self.watermark_extractor.eval()
             self.watermark_extractor = self.watermark_extractor.to(self.device)
         
